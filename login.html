@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script>
+    $(function(){
+        $(".btnLogin").bind('click',function () {
+            userName = $('.userName').val();
+            passWord = $('.userPwd').val();
+            if (userName === "" || passWord === "") {
+                $(".tiptxt").show(0).html("用户名或密码不能为空！");
+                return false;
+            }
+            $.ajax({
+                url:'/index/login',
+                type:'POST',
+                data:{
+                    username:userName,
+                    password:passWord
+                },success:function(res){
+                    if(res.status){
+                        window.location.href = "/Index/index";
+                    } else {
+                        $(".tiptxt").show(0).html(res.info);
+                    }
+                },error:function(){
+                    $(".tiptxt").show(0).html("系统错误，请联系客服！");
+                }
+            })
+        });
+    })
+</script>
+<script>
+    $(document).ready(function(){
+        $("#btnLogin").click(function(){
+            $.ajax({
+                type:"POST",
+                url:"/index/login",
+                data:{
+                    username:$('.userName').val(),
+                    password:$('.userPwd').val()
+                },
+                success: function(date) {
+                    if(date.status){
+                        window.location.href='/Index/index';
+                    }else{
+                        $(".tiptxt").show(0).html(date.info);
+                    }
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>
